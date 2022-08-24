@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	"fmt"
+
+	"github.com/cyp0633/joycon-terminal/devices"
 )
 
 // App struct
@@ -24,4 +26,12 @@ func (a *App) startup(ctx context.Context) {
 // Greet returns a greeting for the given name
 func (a *App) Greet(name string) string {
 	return fmt.Sprintf("Hello %s, It's show time!", name)
+}
+
+func (a *App) ConnectSerial(path string) string {
+	err := devices.ConnectSerial(path)
+	if err != nil {
+		return err.Error()
+	}
+	return "success"
 }

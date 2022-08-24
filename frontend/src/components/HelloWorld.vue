@@ -1,33 +1,55 @@
 <script setup>
-import {reactive} from 'vue'
-import {Greet} from '../../wailsjs/go/main/App'
+import { reactive } from 'vue'
+import { Greet, ConnectSerial } from '../../wailsjs/go/main/App'
 
 const data = reactive({
   name: "",
-  resultText: "Please enter your name below 👇",
+  resultText: "等待连接",
+  status: false,
 })
 
-function greet() {
-  Greet(data.name).then(result => {
+function connect() {
+  if (data.name == "") {
+    data.resultText = "请输入串口名称或路径"
+    return
+  }
+  if(data.status==true){
+    data.resultText = "串口已连接"
+    return
+  }
+  ConnectSerial(data.name).then(result => {
     data.resultText = result
   })
+  if(result=="success")
+  {
+    data.status = true
+  }
 }
 
 </script>
 
 <template>
   <main>
-    <div id="result" class="result">{{ data.resultText }}</div>
-    <div id="input" class="input-box">
-      <input id="name" v-model="data.name" autocomplete="off" class="input" type="text"/>
-      <button class="btn" @click="greet">Greet</button>
+    <div id="tip" class="tip">
+      <h3>输入串口名/路径</h3>对于 Windows，尝试 <code class="code">COMx</code>；否则，尝试 <code class="code">/dev/ttyUSBx</code>
     </div>
+    <div id="input" class="input-box">
+      <input id="name" v-model="data.name" autocomplete="off" class="input" type="text" />
+      <button class="btn" @click="connect">连接</button>
+    </div>
+    <div id="result" class="result">{{ data.resultText }}</div>
   </main>
 </template>
 
 <style scoped>
 .result {
   height: 20px;
+  line-height: 20px;
+  margin: 1.5rem auto;
+}
+
+.tip {
+  height: 50px;
   line-height: 20px;
   margin: 1.5rem auto;
 }
@@ -67,5 +89,13 @@ function greet() {
 .input-box .input:focus {
   border: none;
   background-color: rgba(255, 255, 255, 1);
+}
+
+.code {
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 1);
+  border-radius: 3px;
+  padding: 0 10px;
 }
 </style>

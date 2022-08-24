@@ -15,7 +15,7 @@ var Conn *serial.Port
 
 func ConnectSerial(path string) error {
 	conf.Name = path
-	Conn, err := serial.OpenPort(conf)
-	Conn.Flush()
+	conn, err := serial.OpenPort(conf)
+	Conn = conn
 	return err
 }

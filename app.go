@@ -38,7 +38,6 @@ func (a *App) ConnectSerial(path string) string {
 	// test connection
 	err = devices.TestConnection()
 	if err != nil {
-		devices.Conn.Close() // guarantee atomic operation
 		return "连接测试失败：" + err.Error()
 	}
 	return "success"

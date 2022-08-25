@@ -28,10 +28,18 @@ func (a *App) Greet(name string) string {
 	return fmt.Sprintf("Hello %s, It's show time!", name)
 }
 
+// ConnectSerial sets up connection
 func (a *App) ConnectSerial(path string) string {
+	// connect port
 	err := devices.ConnectSerial(path)
 	if err != nil {
-		return err.Error()
+		return "连接串口失败：" + err.Error()
+	}
+	// test connection
+	err = devices.TestConnection()
+	if err != nil {
+		devices.Conn.Close() // guarantee atomic operation
+		return "连接测试失败：" + err.Error()
 	}
 	return "success"
 }

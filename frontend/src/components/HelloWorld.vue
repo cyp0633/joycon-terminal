@@ -13,15 +13,14 @@ function connect() {
 		data.resultText = "请输入串口名称或路径"
 		return
 	}
-	if(data.status==true){
+	if (data.status == true) {
 		data.resultText = "串口已连接"
 		return
 	}
 	ConnectSerial(data.name).then(result => {
 		data.resultText = result
 	})
-	if(result=="success")
-	{
+	if (result == "success") {
 		data.status = true
 	}
 }

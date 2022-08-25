@@ -1,8 +1,8 @@
 package devices
 
 import (
+	"errors"
 	"log"
-	"runtime"
 	"time"
 
 	"github.com/tarm/serial"
@@ -20,7 +20,10 @@ func ConnectSerial(path string) error {
 	conf.Name = path
 	conn, err := serial.OpenPort(conf)
 	Conn = conn
-	log.Printf("Connected to port %s\n", path)
+	log.Printf("Connected to port %s", path)
+	if err != nil {
+		log.Print(err.Error())
+	}
 	return err
 }
 
@@ -31,7 +34,7 @@ func read() ([]byte, int) {
 	num, err := Conn.Read(buf)
 	if err != nil {
 		log.Println(err)
-		return nil, 0
+		return nil, -1
 	}
 	return buf, num
 }
@@ -47,13 +50,15 @@ func write(buffer []byte) int {
 }
 
 // TestConnection test read and write function
-func TestConnection() {
-	if runtime.GOOS == "windows" {
-		ConnectSerial("COM3")
-	} else {
-		ConnectSerial("/dev/ttyUSB0")
-	}
-	write([]byte{0x55, 0xaa, 0xff, 0x01, 0x00, 0x00, 0x00, 0x00})
+func TestConnection() error {
+	write([]byte{ProtocolHead, DeviceSpecialProtocol, KeyTestConnection, KeyActionRequireTest, 0x00, 0x00, 0x00, 0x00})
 	buf, num := read()
 	log.Printf("Test data received: %v, %d bytes in total\n", buf, num)
+	if num == -1 {
+		return errors.New("读取失败，请查看控制台日志")
+	}
+	if num != 8 || (buf[0] != ProtocolHead || buf[1] != DeviceSpecialProtocol || buf[2] != KeyTestConnection || buf[3] != KeyActionConnectionOk) {
+		return errors.New("握手失败 - 是否连接了正确的设备？")
+	}
+	return nil
 }

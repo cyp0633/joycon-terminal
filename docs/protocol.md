@@ -35,3 +35,22 @@ key_action 是按键动作，0x01 按下，0x02 抬起。
 
 key_action is the key action. 0x01 is pressed, 0x02 is released.
 
+## 特殊协议 Special protocol
+
+设备号为 0xFF 的均为特殊协议。
+
+device_num == 0xFF is the special protocol.
+
+```
+01 FF 00 00 00 00 00 00
+```
+
+由 PC 发送，进行握手。
+
+Sent by the PC to handshake with the board.
+
+```
+01 FF 00 01 00 00 00 00
+```
+
+上条消息的正确回复。

@@ -29,7 +29,7 @@ function connect() {
 
 <template>
 	<main>
-		<div id="tip" class="tip">
+		<div id="tip" class="tip h-16 mx-auto">
 			<h3>输入串口名/路径</h3>对于 Windows，尝试 <code class="code">COMx</code>；否则，尝试 <code class="code">/dev/ttyUSBx</code>
 		</div>
 		<div id="input" class="input-box">
@@ -47,11 +47,11 @@ function connect() {
 	margin: 1.5rem auto;
 }
 
-.tip {
+/* .tip {
 	height: 50px;
 	line-height: 20px;
 	margin: 1.5rem auto;
-}
+} */
 
 .input-box .btn {
 	width: 60px;

@@ -1,6 +1,7 @@
 <script setup>
 import { reactive } from 'vue'
 import { Greet, ConnectSerial } from '../../wailsjs/go/main/App'
+import {NButton,NInput} from 'naive-ui'
 
 const data = reactive({
 	name: "",
@@ -33,8 +34,10 @@ function connect() {
 			<h3>输入串口名/路径</h3>对于 Windows，尝试 <code class="code">COMx</code>；否则，尝试 <code class="code">/dev/ttyUSBx</code>
 		</div>
 		<div id="input" class="input-box">
-			<input id="name" v-model="data.name" autocomplete="off" class="input" type="text" />
-			<button class="btn" @click="connect">连接</button>
+			<!-- <input id="name" v-model="data.name" autocomplete="off" class="input" type="text" /> -->
+			<n-input id="name" v-model="data.name" autocomplete="off" class="m-1.5 w-5" type="text" placeholder="串口名" />
+			<!-- <button class="btn" @click="connect">连接</button> -->
+			<n-button type="primary" @click="connect" class="m-1.5">连接</n-button>
 		</div>
 		<div id="result" class="result">{{ data.resultText }}</div>
 	</main>

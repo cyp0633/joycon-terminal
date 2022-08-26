@@ -3,12 +3,13 @@ module github.com/cyp0633/joycon-terminal
 go 1.17
 
 require (
-	github.com/tarm/serial v0.0.0-20180830185346-98f6abe2eb07
 	github.com/wailsapp/wails/v2 v2.0.0-beta.44.2
+	go.bug.st/serial v1.3.5
 )
 
 require (
 	github.com/bep/debounce v1.2.1 // indirect
+	github.com/creack/goselect v0.1.2 // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect
 	github.com/google/uuid v1.1.2 // indirect
 	github.com/imdario/mergo v0.3.12 // indirect

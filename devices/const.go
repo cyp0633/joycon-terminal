@@ -15,3 +15,5 @@ const (
 	KeyActionPress        = 0x01
 	KeyActionRelease      = 0x02
 )
+
+var TestConnectionSend = []byte{ProtocolHead, DeviceSpecialProtocol, KeyTestConnection, KeyActionRequireTest, 0x00, 0x00, 0x00, 0x00}

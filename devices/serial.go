@@ -3,24 +3,28 @@ package devices
 import (
 	"errors"
 	"log"
+	"time"
 
-	"github.com/tarm/serial"
+	"go.bug.st/serial"
 )
 
-var conf = &serial.Config{
-	Baud:     4800,
-	Size:     8,
-	Parity:   0,
-	StopBits: 1,
-	// ReadTimeout: time.Second,
+var conf = &serial.Mode{
+	BaudRate: 4800,
+	DataBits: 8,
+	Parity:   serial.NoParity,
+	StopBits: serial.OneStopBit,
 }
 
-var Conn *serial.Port
+var Conn serial.Port
+
+// GetPortList returns a list of available serial ports
+func GetPortList() ([]string, error) {
+	return serial.GetPortsList()
+}
 
 // ConnectSerial connects to the serial port
 func ConnectSerial(path string) error {
-	conf.Name = path
-	conn, err := serial.OpenPort(conf)
+	conn, err := serial.Open(path, conf)
 	Conn = conn
 	log.Printf("Connected to port %s", path)
 	if err != nil {
@@ -29,11 +33,11 @@ func ConnectSerial(path string) error {
 	return err
 }
 
-// read fetches data from the serial port
-// Return: size of the data read, error
 func read() ([]byte, int) {
+	time.Sleep(time.Millisecond * 500) // wait 500 ms to read into system buffer
 	buf := make([]byte, 128)
 	num, err := Conn.Read(buf)
+	log.Printf("Data received: %v, %d bytes in total\n", buf[:num], num)
 	if err != nil {
 		log.Println(err)
 		return nil, -1
@@ -44,6 +48,7 @@ func read() ([]byte, int) {
 // write writes data to the serial port
 func write(buffer []byte) int {
 	num, err := Conn.Write(buffer)
+	log.Printf("Data sent: %v, %d bytes in total\n", buffer[:num], num)
 	if err != nil {
 		log.Println(err)
 		return -1
@@ -53,14 +58,14 @@ func write(buffer []byte) int {
 
 // TestConnection test read and write function
 func TestConnection() error {
-	Conn.Flush()
+	log.Printf("Test connection")
+	Conn.ResetInputBuffer()
 	var err error
-	write([]byte{ProtocolHead, DeviceSpecialProtocol, KeyTestConnection, KeyActionRequireTest, 0x00, 0x00, 0x00, 0x00})
+	write(TestConnectionSend)
 	buf, num := read()
-	log.Printf("Test data received: %v, %d bytes in total\n", buf, num)
 	if num == -1 {
 		err = errors.New("读取失败，请查看控制台日志")
-	} else if num != 8 || (buf[0] != ProtocolHead || buf[1] != DeviceSpecialProtocol || buf[2] != KeyTestConnection || buf[3] != KeyActionConnectionOk) {
+	} else if num != 8 || buf[0] != ProtocolHead || buf[1] != DeviceSpecialProtocol || buf[2] != KeyTestConnection || buf[3] != KeyActionConnectionOk {
 		err = errors.New("握手失败 - 是否连接了正确的设备？")
 	}
 	if err != nil {

@@ -27,3 +27,16 @@ const (
 )
 
 var TestConnectionSend = []byte{ProtocolHead, DeviceSpecialProtocol, KeyTestConnection, KeyActionRequireTest, 0x00, 0x00, 0x00, 0x00}
+
+// key map
+var keymap = [][]string{
+	{}, // left blank intentionally
+	{"", "q", "e", "r", "w", "a", "s", "d", "enter"},            // device 0x01 (master)
+	{"", "a", "b", "c", "up", "down", "left", "right", "enter"}, // device 0x02
+	{}, // device 0x03
+	{}, // device 0x04
+	{}, // device 0x05
+	{}, // device 0x06
+	{}, // device 0x07
+	{}, // device 0x08
+}

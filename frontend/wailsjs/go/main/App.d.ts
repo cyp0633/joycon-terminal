@@ -3,6 +3,12 @@
 
 export function ConnectSerial(arg1:string):Promise<string>;
 
+export function Disconnect():void;
+
 export function GetAvailablePorts():Promise<string>;
 
 export function Greet(arg1:string):Promise<string>;
+
+export function StartListen():void;
+
+export function StopListen():void;

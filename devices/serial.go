@@ -3,8 +3,10 @@ package devices
 import (
 	"errors"
 	"log"
+	"sync"
 	"time"
 
+	"github.com/go-vgo/robotgo"
 	"go.bug.st/serial"
 )
 
@@ -16,6 +18,9 @@ var conf = &serial.Mode{
 }
 
 var Conn serial.Port
+
+var EnableRead bool
+var EnableReadMtx sync.Mutex
 
 // GetPortList returns a list of available serial ports
 func GetPortList() ([]string, error) {
@@ -38,8 +43,8 @@ func ConnectSerial(path string) error {
 	return err
 }
 
-func read() ([]byte, int) {
-	time.Sleep(time.Millisecond * 500) // wait 500 ms to read into system buffer
+func read(sleepTime time.Duration) ([]byte, int) {
+	time.Sleep(sleepTime) // wait 500 ms to read into system buffer
 	buf := make([]byte, 128)
 	num, err := Conn.Read(buf)
 	log.Printf("Data received: %v, %d bytes in total\n", buf[:num], num)
@@ -67,7 +72,7 @@ func TestConnection() error {
 	Conn.ResetInputBuffer()
 	var err error
 	write(TestConnectionSend)
-	buf, num := read()
+	buf, num := read(500 * time.Millisecond)
 	if num == -1 {
 		err = errors.New("读取失败，请查看控制台日志")
 	} else if num != 8 || buf[0] != ProtocolHead || buf[1] != DeviceSpecialProtocol || buf[2] != KeyTestConnection || buf[3] != KeyActionConnectionOk {
@@ -77,4 +82,35 @@ func TestConnection() error {
 		Conn.Close()
 	}
 	return err
+}
+
+func RealtimeRead() {
+	log.Printf("Start listening")
+	for {
+		EnableReadMtx.Lock()
+		if !EnableRead {
+			EnableReadMtx.Unlock()
+			continue
+		}
+		EnableReadMtx.Unlock()
+		buf, num := read(200 * time.Millisecond)
+		if num <= 0 || buf[0] != ProtocolHead {
+			continue
+		}
+		if buf[1] == DeviceSpecialProtocol { // special protocol
+
+		} else { // device key
+			device := (int)(buf[1])
+			key := (int)(buf[2])
+			action := (int)(buf[3])
+			switch action {
+			case KeyActionPress:
+				robotgo.KeyDown(keymap[device][key])
+				log.Printf("Key %s pressed", keymap[device][key])
+			case KeyActionRelease:
+				robotgo.KeyUp(keymap[device][key])
+				log.Printf("Key %s released", keymap[device][key])
+			}
+		}
+	}
 }

@@ -52,3 +52,21 @@ func (a *App) GetAvailablePorts() string {
 	}
 	return fmt.Sprintf("可用端口列表：%v", list)
 }
+
+func (a *App) StartListen() {
+	devices.EnableReadMtx.Lock()
+	devices.EnableRead = true
+	devices.EnableReadMtx.Unlock()
+	devices.RealtimeRead()
+}
+
+func (a *App) StopListen() {
+	devices.EnableReadMtx.Lock()
+	devices.EnableRead = false
+	devices.EnableReadMtx.Unlock()
+}
+
+func (a *App) Disconnect() {
+	a.StopListen()
+	devices.Conn.Close()
+}

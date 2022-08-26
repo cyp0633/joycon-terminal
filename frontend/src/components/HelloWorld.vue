@@ -1,6 +1,6 @@
 <script setup>
 import { reactive } from 'vue'
-import { Greet, ConnectSerial } from '../../wailsjs/go/main/App'
+import { ConnectSerial, StartListen, StopListen,Disconnect } from '../../wailsjs/go/main/App'
 import { NButton, NInput, NAlert, NSpace } from 'naive-ui'
 
 const data = reactive({
@@ -23,15 +23,17 @@ function connect() {
 	}
 	ConnectSerial(data.name).then(result => {
 		data.resultText = result
-	})
-	if (result == "success") {
+		if (result == "success") {
 		data.status = true
 		data.alertBox = "success"
+		StartListen()
 	}
 	else {
 		data.alertBox = "error"
 	}
+	})
 }
+
 
 </script>
 
@@ -43,6 +45,7 @@ function connect() {
 		<n-space align="center" justify="center">
 			<n-input id="name" v-model:value="data.name" class="m-1.5 w-2/6" type="text" placeholder="串口名" />
 			<n-button type="primary" @click="connect" class="m-1.5">连接</n-button>
+			<n-button type="error" @click="Disconnect" class="m-1.5">断开</n-button>
 		</n-space>
 		<n-alert title="连接状态" v-bind:type="data.alertBox" class="w-2/6 mx-auto inset-x-0">{{ data.resultText }}
 		</n-alert>

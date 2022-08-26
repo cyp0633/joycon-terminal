@@ -42,3 +42,11 @@ func (a *App) ConnectSerial(path string) string {
 	}
 	return "success"
 }
+
+func (a *App) GetAvailablePorts() string {
+	list, err := devices.GetPortList()
+	if err != nil {
+		return "获取串口列表失败：" + err.Error()
+	}
+	return fmt.Sprintf("可用端口列表：%v", list)
+}

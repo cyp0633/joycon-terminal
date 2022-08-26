@@ -19,7 +19,12 @@ var Conn serial.Port
 
 // GetPortList returns a list of available serial ports
 func GetPortList() ([]string, error) {
-	return serial.GetPortsList()
+	list, err := serial.GetPortsList()
+	log.Printf("Available ports: %v", list)
+	if err != nil {
+		log.Printf("Get port list failed: %v", err)
+	}
+	return list, err
 }
 
 // ConnectSerial connects to the serial port

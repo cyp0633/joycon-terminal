@@ -6,6 +6,10 @@ export function ConnectSerial(arg1) {
   return window['go']['main']['App']['ConnectSerial'](arg1);
 }
 
+export function GetAvailablePorts() {
+  return window['go']['main']['App']['GetAvailablePorts']();
+}
+
 export function Greet(arg1) {
   return window['go']['main']['App']['Greet'](arg1);
 }

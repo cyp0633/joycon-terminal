@@ -45,7 +45,7 @@ func ConnectSerial(path string) error {
 
 func read(sleepTime time.Duration) ([]byte, int) {
 	time.Sleep(sleepTime) // wait 500 ms to read into system buffer
-	buf := make([]byte, 128)
+	buf := make([]byte, 8)
 	num, err := Conn.Read(buf)
 	log.Printf("Data received: %v, %d bytes in total\n", buf[:num], num)
 	if err != nil {
@@ -53,6 +53,21 @@ func read(sleepTime time.Duration) ([]byte, int) {
 		return nil, -1
 	}
 	return buf, num
+}
+
+func read8bits(sleepTime time.Duration) ([]byte, int) {
+	var num, numTemp int
+	var buf, bufTemp []byte
+	for num = 0; num < 8; {
+		bufTemp, numTemp = read(sleepTime)
+		if numTemp == -1 {
+			continue
+		}
+		buf = append(buf, bufTemp[:numTemp]...)
+		num += numTemp
+	}
+	log.Printf("Merged 8-bit message: %v", buf)
+	return buf[:num], num
 }
 
 // write writes data to the serial port
@@ -72,7 +87,7 @@ func TestConnection() error {
 	Conn.ResetInputBuffer()
 	var err error
 	write(TestConnectionSend)
-	buf, num := read(500 * time.Millisecond)
+	buf, num := read8bits(500 * time.Millisecond)
 	if num == -1 {
 		err = errors.New("读取失败，请查看控制台日志")
 	} else if num != 8 || buf[0] != ProtocolHead || buf[1] != DeviceSpecialProtocol || buf[2] != KeyTestConnection || buf[3] != KeyActionConnectionOk {
@@ -93,7 +108,7 @@ func RealtimeRead() {
 			continue
 		}
 		EnableReadMtx.Unlock()
-		buf, num := read(200 * time.Millisecond)
+		buf, num := read8bits(50 * time.Millisecond)
 		if num <= 0 || buf[0] != ProtocolHead {
 			continue
 		}

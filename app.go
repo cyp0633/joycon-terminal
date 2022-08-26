@@ -30,6 +30,8 @@ func (a *App) Greet(name string) string {
 
 // ConnectSerial sets up connection
 func (a *App) ConnectSerial(path string) string {
+	// get available ports
+	_ = a.GetAvailablePorts()
 	// connect port
 	err := devices.ConnectSerial(path)
 	if err != nil {

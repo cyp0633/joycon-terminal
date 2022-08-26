@@ -45,7 +45,7 @@ device_num == 0x00 is the special protocol.
 
 ### PC 握手识别 / PC Handshake Recognition
 
-使用设备号 0x00 代表。
+使用按键号 0x00 代表。
 
 Represented by device number #0x00.
 
@@ -65,7 +65,7 @@ Sent by the PC to handshake with the board.
 
 ### 板间握手识别 / Board Handshake Recognition
 
-使用设备号 0x01 代表。
+使用按键号 0x01 代表。
 
 Represented by device number #0x01.
 

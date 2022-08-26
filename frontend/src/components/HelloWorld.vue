@@ -1,7 +1,7 @@
 <script setup>
 import { reactive } from 'vue'
 import { Greet, ConnectSerial } from '../../wailsjs/go/main/App'
-import { NButton, NInput, NAlert, NSpace,NCode } from 'naive-ui'
+import { NButton, NInput, NAlert, NSpace } from 'naive-ui'
 
 const data = reactive({
 	name: "",

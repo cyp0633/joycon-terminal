@@ -22,6 +22,8 @@ var Conn serial.Port
 var EnableRead bool
 var EnableReadMtx sync.Mutex
 
+var onlineStatus [9]int8
+
 // GetPortList returns a list of available serial ports
 func GetPortList() ([]string, error) {
 	list, err := serial.GetPortsList()
@@ -90,11 +92,25 @@ func TestConnection() error {
 	buf, num := read8bits(500 * time.Millisecond)
 	if num == -1 {
 		err = errors.New("读取失败，请查看控制台日志")
-	} else if num != 8 || buf[0] != ProtocolHead || buf[1] != DeviceSpecialProtocol || buf[2] != KeyTestConnection || buf[3] != KeyActionConnectionOk {
+	} else if num != 8 ||
+		buf[0] != ProtocolHead ||
+		buf[1] != DeviceSpecialProtocol ||
+		buf[2] != KeyTestConnection ||
+		buf[3] != KeyActionConnectionOk {
 		err = errors.New("握手失败 - 是否连接了正确的设备？")
 	}
 	if err != nil {
 		Conn.Close()
+	} else {
+		onlineStatus[1] = (int8)(buf[4] >> 4)
+		onlineStatus[2] = (int8)(buf[4] & 0x0f)
+		onlineStatus[3] = (int8)(buf[5] >> 4)
+		onlineStatus[4] = (int8)(buf[5] & 0x0f)
+		onlineStatus[5] = (int8)(buf[6] >> 4)
+		onlineStatus[6] = (int8)(buf[6] & 0x0f)
+		onlineStatus[7] = (int8)(buf[7] >> 4)
+		onlineStatus[8] = (int8)(buf[7] & 0x0f)
+		log.Printf("Online devices: %v", onlineStatus)
 	}
 	return err
 }
@@ -105,7 +121,7 @@ func RealtimeRead() {
 		EnableReadMtx.Lock()
 		if !EnableRead {
 			EnableReadMtx.Unlock()
-			continue
+			return
 		}
 		EnableReadMtx.Unlock()
 		buf, num := read8bits(50 * time.Millisecond)

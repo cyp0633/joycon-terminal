@@ -1,7 +1,7 @@
 <script setup>
-import { reactive } from 'vue'
-import { ConnectSerial, StartListen, StopListen,Disconnect } from '../../wailsjs/go/main/App'
-import { NButton, NInput, NAlert, NSpace } from 'naive-ui'
+import { reactive, defineComponent, ref } from 'vue'
+import { ConnectSerial, StartListen, StopListen, Disconnect } from '../../wailsjs/go/main/App'
+import { NButton, NInput, NAlert, NSpace, NSelect } from 'naive-ui'
 
 const data = reactive({
 	name: "",
@@ -24,13 +24,13 @@ function connect() {
 	ConnectSerial(data.name).then(result => {
 		data.resultText = result
 		if (result == "success") {
-		data.status = true
-		data.alertBox = "success"
-		StartListen()
-	}
-	else {
-		data.alertBox = "error"
-	}
+			data.status = true
+			data.alertBox = "success"
+			StartListen()
+		}
+		else {
+			data.alertBox = "error"
+		}
 	})
 }
 
@@ -43,6 +43,7 @@ function connect() {
 			<h3>输入串口名/路径</h3>对于 Windows，尝试 <code class="code">COMx</code>；否则，尝试 <code class="code">/dev/ttyUSBx</code>
 		</div>
 		<n-space align="center" justify="center">
+			<n-select></n-select>
 			<n-input id="name" v-model:value="data.name" class="m-1.5 w-2/6" type="text" placeholder="串口名" />
 			<n-button type="primary" @click="connect" class="m-1.5">连接</n-button>
 			<n-button type="error" @click="Disconnect" class="m-1.5">断开</n-button>

@@ -1,5 +1,5 @@
 html {
-    background-color: rgba(27, 38, 54, 1);
+    background-color: rgba(255, 255, 255, 0);
     text-align: center;
     color: white;
 }
@@ -24,3 +24,21 @@ body {
     height: 100vh;
     text-align: center;
 }
+
+/* .acrylic {
+
+    -webkit-backdrop-filter: blur(40px);
+    backdrop-filter: blur(40px);
+    background-color: #F7F7F7CC;
+    overflow-y: auto;
+    background-image: url('./assets/images/noise.png');
+    background-repeat: repeat;
+    box-shadow: 0px 25.6px 57.6px rgb(0 0 0 / 14%), 0px 0px 16.4px rgb(0 0 0 / 12%);
+} */
+
+.acrylic {
+    position: relative;
+    background: rgba(0,0,0,0.5);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }

@@ -3,7 +3,6 @@ import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
-	<img id="logo" alt="a logo to be replaced later" src="./assets/images/logo-universal.png"/>
 	<HelloWorld/>
 </template>
 

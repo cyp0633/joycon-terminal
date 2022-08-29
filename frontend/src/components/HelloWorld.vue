@@ -1,17 +1,16 @@
 <script setup>
-import { reactive, defineComponent, ref } from 'vue'
+import { reactive } from 'vue'
 import { ConnectSerial, StartListen, StopListen, Disconnect, GetAvailablePorts } from '../../wailsjs/go/main/App'
-import { NButton, NInput, NAlert, NSpace, NSelect } from 'naive-ui'
-import { result } from 'lodash';
+import { NButton, NInput, NAlert, NSpace, NSelect, useLoadingBar } from 'naive-ui'
 
-const data = reactive({
+var data = reactive({
 	name: "",
 	resultText: "等待连接",
 	status: false,
 	alertBox: "info",
 })
 
-const serialOptions = []
+var serialOptions = []
 
 function getAvailablePorts() {
 	GetAvailablePorts().then(result => {
@@ -19,13 +18,18 @@ function getAvailablePorts() {
 	})
 }
 
+const loadingBar = useLoadingBar()
+
 function connect() {
+	loadingBar.start()
 	if (data.name == "") {
 		data.resultText = "请输入串口名称或路径"
 		data.alertBox = "error"
+		loadingBar.error()
 		return
 	}
 	if (data.status == true) {
+		loadingBar.finish()
 		data.resultText = "串口已连接"
 		data.alertBox = "warning"
 		return
@@ -35,15 +39,23 @@ function connect() {
 		if (result == "success") {
 			data.status = true
 			data.alertBox = "success"
+			loadingBar.finish()
 			StartListen()
 		}
 		else {
 			data.alertBox = "error"
+			loadingBar.error()
 		}
 	})
 }
 
-
+function disconnect() {
+	StopListen()
+	Disconnect()
+	data.alertBox = "info"
+	data.status = false
+	data.resultText = "等待连接"
+}
 </script>
 
 <template>
@@ -56,7 +68,7 @@ function connect() {
 				:options="serialOptions" @click="getAvailablePorts" />
 			<n-input id="name" v-model:value="data.name" class="m-1.5 w-2/6" type="text" placeholder="串口名" />
 			<n-button type="primary" @click="connect" class="m-1.5">连接</n-button>
-			<n-button type="error" @click="StopListen" class="m-1.5">断开</n-button>
+			<n-button type="error" @click="disconnect" class="m-1.5">断开</n-button>
 		</n-space>
 		<n-alert title="连接状态" v-bind:type="data.alertBox" class="w-2/6 mx-auto inset-x-0">{{ data.resultText }}
 		</n-alert>

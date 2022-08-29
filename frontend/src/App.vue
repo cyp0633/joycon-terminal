@@ -1,21 +1,11 @@
 <script setup>
 import HelloWorld from './components/HelloWorld.vue'
+import { NLoadingBarProvider} from 'naive-ui'
 </script>
 
 <template>
-	<HelloWorld/>
-</template>
+	<n-loading-bar-provider>
+		<HelloWorld />
+	</n-loading-bar-provider>
 
-<style>
-#logo {
-	display: block;
-	width: 50%;
-	height: auto;
-	margin: auto;
-	padding: 10% 0 0;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: 100% 100%;
-	background-origin: content-box;
-}
-</style>
+</template>

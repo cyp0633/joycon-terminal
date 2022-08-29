@@ -2,20 +2,21 @@
 import { reactive } from 'vue'
 import { ConnectSerial, StartListen, StopListen, Disconnect, GetAvailablePorts } from '../../wailsjs/go/main/App'
 import { NButton, NInput, NAlert, NSpace, NSelect, useLoadingBar, NTabs, NTabPane, NH1, NText } from 'naive-ui'
+import Settings from './Settings.vue'
 
 var data = reactive({
 	name: "",
 	resultText: "等待连接",
 	status: false,
 	alertBox: "info",
+	serialOptions: [],
 })
 
-// var serialOptions = []
 
 function getAvailablePorts() {
 	GetAvailablePorts().then(result => {
 		console.log(result)
-		serialOptions = result
+		data.serialOptions = result
 	})
 }
 
@@ -71,14 +72,12 @@ function disconnect() {
 					</n-text>
 				</n-h1>
 				<div id="tip" class="tip mx-auto m-1.5 text-base">
-					<n-text>输入串口名/路径<br>对于 Windows，尝试 </n-text>
-					<n-text code>COMx</n-text>
-					<n-text>；否则，尝试 </n-text>
-					<n-text code>/dev/ttyUSBx</n-text>
+					<n-text>选择想要连接的串口</n-text>
 				</div>
 				<n-space align="center" justify="center">
 					<n-select children-field="children" label-field="label" value-field="value" filterable
-						:options="serialOptions" @click="getAvailablePorts" placeholder="选择串口" />
+						:options="data.serialOptions" @click="getAvailablePorts" placeholder="选择串口"
+						v-model:value="data.name" />
 					<n-input id="name" v-model:value="data.name" class="m-1.5 w-2/6" type="text" placeholder="串口名" />
 				</n-space>
 				<n-space align="center" justify="center">
@@ -91,13 +90,7 @@ function disconnect() {
 				</n-alert>
 			</n-tab-pane>
 			<n-tab-pane name="settings" tab="设置">
-				<n-h1 prefix="bar" class="text-left">
-					<n-text type="primary">
-						设置
-					</n-text>
-				</n-h1>
-				<n-button secondary type="success">Test</n-button>
-				<p>Nothing here now.</p>
+				<settings />
 			</n-tab-pane>
 		</n-tabs>
 	</main>

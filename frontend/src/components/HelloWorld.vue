@@ -52,9 +52,12 @@ function connect() {
 }
 
 function disconnect() {
-	StopListen()
+	if (!data.status) {
+		return
+	}
 	Disconnect()
 	data.alertBox = "info"
+	loadingBar.finish()
 	data.status = false
 	data.resultText = "等待连接"
 }
@@ -77,12 +80,12 @@ function disconnect() {
 				<n-space align="center" justify="center">
 					<n-select children-field="children" label-field="label" value-field="value" filterable
 						:options="data.serialOptions" @click="getAvailablePorts" placeholder="选择串口"
-						v-model:value="data.name" />
-					<n-input id="name" v-model:value="data.name" class="m-1.5 w-2/6" type="text" placeholder="串口名" />
+						v-model:value="data.name" class="w-2/6"/>
+					<!-- <n-input id="name" v-model:value="data.name" class="m-1.5 w-2/6" type="text" placeholder="串口名" /> -->
 				</n-space>
 				<n-space align="center" justify="center">
 					<n-button type="primary" @click="connect" class="m-1.5" text-color="#18a058">连接</n-button>
-					<n-button type="error" @click="disconnect" class="m-1.5" secondary>断开</n-button>
+					<n-button type="error" disabled @click="disconnect" class="m-1.5" secondary>断开</n-button>
 				</n-space>
 				<n-alert title="连接状态" v-bind:type="data.alertBox" class="w-2/6 mx-auto inset-x-0 m-1.5">{{
 						data.resultText

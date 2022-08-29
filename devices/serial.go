@@ -102,14 +102,14 @@ func TestConnection() error {
 	if err != nil {
 		Conn.Close()
 	} else {
-		onlineStatus[1] = (int8)(buf[4] >> 4)
-		onlineStatus[2] = (int8)(buf[4] & 0x0f)
-		onlineStatus[3] = (int8)(buf[5] >> 4)
-		onlineStatus[4] = (int8)(buf[5] & 0x0f)
-		onlineStatus[5] = (int8)(buf[6] >> 4)
-		onlineStatus[6] = (int8)(buf[6] & 0x0f)
-		onlineStatus[7] = (int8)(buf[7] >> 4)
-		onlineStatus[8] = (int8)(buf[7] & 0x0f)
+		onlineStatus[1] = ((int8)(buf[4]) >> 0) & 0x01
+		onlineStatus[2] = ((int8)(buf[4]) >> 1) & 0x01
+		onlineStatus[3] = ((int8)(buf[4]) >> 2) & 0x01
+		onlineStatus[4] = ((int8)(buf[4]) >> 3) & 0x01
+		onlineStatus[5] = ((int8)(buf[4]) >> 4) & 0x01
+		onlineStatus[6] = ((int8)(buf[4]) >> 5) & 0x01
+		onlineStatus[7] = ((int8)(buf[4]) >> 6) & 0x01
+		onlineStatus[8] = ((int8)(buf[4]) >> 7) & 0x01
 		log.Printf("Online devices: %v", onlineStatus)
 	}
 	return err

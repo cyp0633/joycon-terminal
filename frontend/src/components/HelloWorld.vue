@@ -1,7 +1,7 @@
 <script setup>
 import { reactive } from 'vue'
 import { ConnectSerial, StartListen, StopListen, Disconnect, GetAvailablePorts } from '../../wailsjs/go/main/App'
-import { NButton, NInput, NAlert, NSpace, NSelect, useLoadingBar, NTabs, NTabPane, useOsTheme, darkTheme, NH1, NText } from 'naive-ui'
+import { NButton, NInput, NAlert, NSpace, NSelect, useLoadingBar, NTabs, NTabPane, NH1, NText } from 'naive-ui'
 
 var data = reactive({
 	name: "",
@@ -10,7 +10,7 @@ var data = reactive({
 	alertBox: "info",
 })
 
-var serialOptions = []
+// var serialOptions = []
 
 function getAvailablePorts() {
 	GetAvailablePorts().then(result => {
@@ -58,12 +58,7 @@ function disconnect() {
 	data.resultText = "等待连接"
 }
 
-// dark theme
-const osThemeRef = useOsTheme();
-const theme = {
-	...darkTheme,
-	...osThemeRef.value,
-};
+
 </script>
 
 <template>

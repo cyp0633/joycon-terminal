@@ -82,8 +82,8 @@ function disconnect() {
 					<n-input id="name" v-model:value="data.name" class="m-1.5 w-2/6" type="text" placeholder="串口名" />
 				</n-space>
 				<n-space align="center" justify="center">
-					<n-button type="primary" @click="connect" class="m-1.5">连接</n-button>
-					<n-button type="error" @click="disconnect" class="m-1.5">断开</n-button>
+					<n-button type="primary" @click="connect" class="m-1.5" text-color="#18a058">连接</n-button>
+					<n-button type="error" @click="disconnect" class="m-1.5" secondary>断开</n-button>
 				</n-space>
 				<n-alert title="连接状态" v-bind:type="data.alertBox" class="w-2/6 mx-auto inset-x-0 m-1.5">{{
 						data.resultText
@@ -96,6 +96,7 @@ function disconnect() {
 						设置
 					</n-text>
 				</n-h1>
+				<n-button secondary type="success">Test</n-button>
 				<p>Nothing here now.</p>
 			</n-tab-pane>
 		</n-tabs>

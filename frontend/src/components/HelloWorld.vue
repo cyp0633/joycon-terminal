@@ -3,6 +3,7 @@ import { reactive } from 'vue'
 import { ConnectSerial, StartListen, StopListen, Disconnect, GetAvailablePorts } from '../../wailsjs/go/main/App'
 import { NButton, NInput, NAlert, NSpace, NSelect, useLoadingBar, NTabs, NTabPane, NH1, NText } from 'naive-ui'
 import Settings from './Settings.vue'
+import About from './About.vue'
 
 var data = reactive({
 	name: "",
@@ -77,12 +78,11 @@ function disconnect() {
 				<div id="tip" class="tip mx-auto m-1.5 text-base">
 					<n-text>选择想要连接的串口</n-text>
 				</div>
-				<n-space align="center" justify="center">
+				<div class="justify-center items-center flex flex-col">
 					<n-select children-field="children" label-field="label" value-field="value" filterable
 						:options="data.serialOptions" @click="getAvailablePorts" placeholder="选择串口"
-						v-model:value="data.name" class="w-2/6"/>
-					<!-- <n-input id="name" v-model:value="data.name" class="m-1.5 w-2/6" type="text" placeholder="串口名" /> -->
-				</n-space>
+						v-model:value="data.name" class="w-2/6 m-1.5" />
+				</div>
 				<n-space align="center" justify="center">
 					<n-button type="primary" @click="connect" class="m-1.5" text-color="#18a058">连接</n-button>
 					<n-button type="error" disabled @click="disconnect" class="m-1.5" secondary>断开</n-button>
@@ -94,6 +94,9 @@ function disconnect() {
 			</n-tab-pane>
 			<n-tab-pane name="settings" tab="设置">
 				<settings />
+			</n-tab-pane>
+			<n-tab-pane name="about" tab="关于">
+				<about />
 			</n-tab-pane>
 		</n-tabs>
 	</main>

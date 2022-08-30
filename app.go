@@ -78,3 +78,7 @@ func (a *App) SetKey(device string, key int, target string) {
 	// keyNum, _ := strconv.Atoi(key)
 	devices.SetKey(deviceNum, key, target)
 }
+
+func (a *App) UsePresetKeys(preset string) {
+	devices.UsePreset(preset)
+}

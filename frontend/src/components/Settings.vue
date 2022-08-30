@@ -1,13 +1,14 @@
 <script setup>
 import { reactive } from 'vue'
 import { NButton, NInput, NAlert, NSpace, NSelect, useLoadingBar, NTabs, NTabPane, NH1, NText, NH2, NA } from 'naive-ui'
-import { GetDevices,SetKey } from '../../wailsjs/go/main/App'
+import { GetDevices, SetKey, UsePresetKeys } from '../../wailsjs/go/main/App'
 
 var data = reactive({
     manualSelectDevice: null,
     manualSelectKey: null,
-    computerKey:null,
+    computerKey: null,
     availableDevices: [],
+    presetApps: ["ForzaHorizon5", "GenshinImpact", "ForestIceFire"],
     availableKeys: [
         {
             type: "group",
@@ -65,8 +66,8 @@ function getDevices() {
     })
 }
 
-function setKey(){
-    SetKey(data.manualSelectDevice,data.manualSelectKey,data.computerKey)
+function setKey() {
+    SetKey(data.manualSelectDevice, data.manualSelectKey, data.computerKey)
 }
 
 </script>
@@ -82,12 +83,12 @@ function setKey(){
             预设
         </n-h2>
         <div class="m-2">
-            <n-text>在下面寻找你玩的游戏，快速进行键位设置。</n-text>
+            <n-text>在下面寻找你玩的游戏或使用场景，快速进行键位设置。</n-text>
         </div>
         <n-space align="center" justify="center">
-            <n-button>《极限竞速：地平线5》</n-button>
-            <n-button>《原神》</n-button>
-            <n-button>《森林冰火人》</n-button>
+            <n-button @click="UsePresetKeys(data.presetApps[0])">《极限竞速：地平线 5》</n-button>
+            <n-button @click="UsePresetKeys(data.presetApps[1])">《原神》</n-button>
+            <n-button @click="UsePresetKeys(data.presetApps[2])">《森林冰火人》</n-button>
         </n-space>
         <n-h2 class="text-left" prefix="bar">自定映射</n-h2>
         <div class="m-2">
@@ -106,6 +107,11 @@ function setKey(){
             <div class="m-2">
                 <n-text>可用的按键名称请参见 </n-text>
                 <n-a href="https://github.com/go-vgo/robotgo/blob/master/docs/keys.md" target="_blank">RobotGo 文档</n-a>
+                <n-text>。<br />另外，软件也支持将 </n-text>
+                <n-text code>lclick</n-text>
+                <n-text> 与 </n-text>
+                <n-text code>rclick</n-text>
+                <n-text> 分别映射到左键与右键。</n-text>
             </div>
         </div>
     </main>

@@ -17,3 +17,5 @@ export function SetKey(arg1:string,arg2:number,arg3:string):void;
 export function StartListen():void;
 
 export function StopListen():void;
+
+export function UsePresetKeys(arg1:string):void;

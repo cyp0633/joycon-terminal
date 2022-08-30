@@ -6,7 +6,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/go-vgo/robotgo"
 	"go.bug.st/serial"
 )
 
@@ -136,11 +135,9 @@ func RealtimeRead() {
 			action := (int)(buf[3])
 			switch action {
 			case KeyActionPress:
-				robotgo.KeyDown(keymap[device][key])
-				log.Printf("Key %s pressed", keymap[device][key])
+				pressKey(keymap[device][key])
 			case KeyActionRelease:
-				robotgo.KeyUp(keymap[device][key])
-				log.Printf("Key %s released", keymap[device][key])
+				releaseKey(keymap[device][key])
 			}
 		}
 	}
@@ -155,9 +152,4 @@ func GetDevices() []int {
 		}
 	}
 	return devices
-}
-
-func SetKey(device, key int, target string) {
-	log.Printf("Set key %d of device %d to %s", key, device, target)
-	keymap[device][key] = target
 }

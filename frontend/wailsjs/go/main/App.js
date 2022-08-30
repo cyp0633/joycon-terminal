@@ -33,3 +33,7 @@ export function StartListen() {
 export function StopListen() {
   return window['go']['main']['App']['StopListen']();
 }
+
+export function UsePresetKeys(arg1) {
+  return window['go']['main']['App']['UsePresetKeys'](arg1);
+}

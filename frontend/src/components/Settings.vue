@@ -95,7 +95,7 @@ function setKey() {
             <n-text>对于更广泛的用途，您可以在这里自定义按键对应关系。</n-text>
         </div>
         <div class="justify-center items-center flex flex-col">
-            <div class="grid grid-cols-2 content-center justify-center items-center gap-4 w-3/6">
+            <div class="grid grid-cols-2 content-center justify-center items-center gap-4 w-3/6 min-w-max">
                 <n-select children-field="children" label-field="label" value-field="value" filterable
                     :options="data.availableDevices" placeholder="选择设备" v-model:value="data.manualSelectDevice"
                     @click="getDevices" />

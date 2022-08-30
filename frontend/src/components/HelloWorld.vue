@@ -81,13 +81,13 @@ function disconnect() {
 				<div class="justify-center items-center flex flex-col">
 					<n-select children-field="children" label-field="label" value-field="value" filterable
 						:options="data.serialOptions" @click="getAvailablePorts" placeholder="选择串口"
-						v-model:value="data.name" class="w-2/6 m-1.5" />
+						v-model:value="data.name" class="w-3/6 m-1.5" />
 				</div>
 				<n-space align="center" justify="center">
 					<n-button type="primary" @click="connect" class="m-1.5" text-color="#18a058">连接</n-button>
 					<n-button type="error" disabled @click="disconnect" class="m-1.5" secondary>断开</n-button>
 				</n-space>
-				<n-alert title="连接状态" v-bind:type="data.alertBox" class="w-2/6 mx-auto inset-x-0 m-1.5">{{
+				<n-alert title="连接状态" v-bind:type="data.alertBox" class="w-2/3 mx-auto inset-x-0 m-1.5 max-w-lg">{{
 						data.resultText
 				}}
 				</n-alert>

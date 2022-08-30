@@ -50,6 +50,10 @@ func (a *App) GetAvailablePorts() []app.SerialOptions {
 	return app.GetSerialPortsList()
 }
 
+func (a *App) GetDevices() []app.SerialOptions {
+	return app.GetSerialPortsList()
+}
+
 func (a *App) StartListen() {
 	devices.EnableReadMtx.Lock()
 	devices.EnableRead = true

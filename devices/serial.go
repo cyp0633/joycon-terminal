@@ -145,3 +145,14 @@ func RealtimeRead() {
 		}
 	}
 }
+
+// GetDevices 获取在线设备列表
+func GetDevices() []int {
+	var devices []int
+	for i := 1; i < 9; i++ {
+		if onlineStatus[i] == 1 {
+			devices = append(devices, i)
+		}
+	}
+	return devices
+}

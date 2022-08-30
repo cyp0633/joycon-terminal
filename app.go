@@ -51,7 +51,7 @@ func (a *App) GetAvailablePorts() []app.SerialOptions {
 }
 
 func (a *App) GetDevices() []app.SerialOptions {
-	return app.GetSerialPortsList()
+	return app.GetOnlineDevices()
 }
 
 func (a *App) StartListen() {

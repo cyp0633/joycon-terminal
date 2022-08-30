@@ -14,6 +14,10 @@ export function GetAvailablePorts() {
   return window['go']['main']['App']['GetAvailablePorts']();
 }
 
+export function GetDevices() {
+  return window['go']['main']['App']['GetDevices']();
+}
+
 export function Greet(arg1) {
   return window['go']['main']['App']['Greet'](arg1);
 }

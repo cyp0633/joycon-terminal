@@ -1,6 +1,7 @@
 package app
 
 import (
+	"log"
 	"strconv"
 
 	"github.com/cyp0633/joycon-terminal/devices"
@@ -13,9 +14,10 @@ func GetOnlineDevices() []SerialOptions {
 		Key:   "devices",
 	}
 	list := devices.GetDevices()
+	log.Printf("list: %v", list)
 	for _, device := range list {
 		var children = SerialChoice{
-			Label:    strconv.Itoa(device),
+			Label:    "设备" + strconv.Itoa(device),
 			Value:    strconv.Itoa(device),
 			Disabled: false,
 		}

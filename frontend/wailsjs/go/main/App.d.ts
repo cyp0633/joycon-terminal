@@ -8,6 +8,8 @@ export function Disconnect():void;
 
 export function GetAvailablePorts():Promise<Array<app.SerialOptions>>;
 
+export function GetDevices():Promise<Array<app.SerialOptions>>;
+
 export function Greet(arg1:string):Promise<string>;
 
 export function StartListen():void;

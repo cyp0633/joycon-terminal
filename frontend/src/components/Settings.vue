@@ -1,7 +1,7 @@
 <script setup>
 import { reactive } from 'vue'
 import { NButton, NInput, NAlert, NSpace, NSelect, useLoadingBar, NTabs, NTabPane, NH1, NText, NH2, NA } from 'naive-ui'
-import { GetDevices } from '../../wailsjs/go/main/App'
+import { GetDevices,SetKey } from '../../wailsjs/go/main/App'
 
 var data = reactive({
     manualSelectDevice: null,
@@ -66,7 +66,7 @@ function getDevices() {
 }
 
 function setKey(){
-    return
+    SetKey(data.manualSelectDevice,data.manualSelectKey,data.computerKey)
 }
 
 </script>
@@ -89,7 +89,10 @@ function setKey(){
             <n-button>《原神》</n-button>
             <n-button>《森林冰火人》</n-button>
         </n-space>
-        <n-h2 class="text-left" prefix="bar">手动调节</n-h2>
+        <n-h2 class="text-left" prefix="bar">自定映射</n-h2>
+        <div class="m-2">
+            <n-text>对于更广泛的用途，您可以在这里自定义按键对应关系。</n-text>
+        </div>
         <div class="justify-center items-center flex flex-col">
             <div class="grid grid-cols-2 content-center justify-center items-center gap-4 w-3/6">
                 <n-select children-field="children" label-field="label" value-field="value" filterable
@@ -97,7 +100,7 @@ function setKey(){
                     @click="getDevices" />
                 <n-select children-field="children" label-field="label" value-field="value" filterable
                     :options="data.availableKeys" placeholder="选择按键" v-model:value="data.manualSelectKey" />
-                <n-input v-model:value="computerKey" type="text" placeholder="映射的 PC 按键"></n-input>
+                <n-input v-model:value="data.computerKey" type="text" placeholder="映射的 PC 按键"></n-input>
                 <n-button secondary type="primary" @click="setKey">设定</n-button>
             </div>
             <div class="m-2">

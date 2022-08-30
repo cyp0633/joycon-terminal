@@ -22,6 +22,10 @@ export function Greet(arg1) {
   return window['go']['main']['App']['Greet'](arg1);
 }
 
+export function SetKey(arg1, arg2, arg3) {
+  return window['go']['main']['App']['SetKey'](arg1, arg2, arg3);
+}
+
 export function StartListen() {
   return window['go']['main']['App']['StartListen']();
 }

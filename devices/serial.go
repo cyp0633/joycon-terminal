@@ -156,3 +156,8 @@ func GetDevices() []int {
 	}
 	return devices
 }
+
+func SetKey(device, key int, target string) {
+	log.Printf("Set key %d of device %d to %s", key, device, target)
+	keymap[device][key] = target
+}

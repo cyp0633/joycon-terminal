@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"strconv"
 
 	"github.com/cyp0633/joycon-terminal/app"
 	"github.com/cyp0633/joycon-terminal/devices"
@@ -70,4 +71,10 @@ func (a *App) StopListen() {
 func (a *App) Disconnect() {
 	a.StopListen()
 	devices.Conn.Close()
+}
+
+func (a *App) SetKey(device string, key int, target string) {
+	deviceNum, _ := strconv.Atoi(device)
+	// keyNum, _ := strconv.Atoi(key)
+	devices.SetKey(deviceNum, key, target)
 }

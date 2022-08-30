@@ -12,6 +12,8 @@ export function GetDevices():Promise<Array<app.SerialOptions>>;
 
 export function Greet(arg1:string):Promise<string>;
 
+export function SetKey(arg1:string,arg2:number,arg3:string):void;
+
 export function StartListen():void;
 
 export function StopListen():void;

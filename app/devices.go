@@ -17,7 +17,7 @@ func GetOnlineDevices() []SerialOptions {
 	log.Printf("list: %v", list)
 	for _, device := range list {
 		var children = SerialChoice{
-			Label:    "设备" + strconv.Itoa(device),
+			Label:    "设备 " + strconv.Itoa(device),
 			Value:    strconv.Itoa(device),
 			Disabled: false,
 		}
